@@ -1,26 +1,26 @@
 <?php
-/**
-* 比较标准的接口输出函数
-* @param string  $info 消息
-* @param integer $code 接口错误码，很关键的参数
-* @param array   $data 附加数据
-* $param string  $location 重定向
-* @return array
-*/
+
 function var_json($info = '', $code = 10000, $data = array(), $location = '') {
+
     $out['code'] = $code ?: 0;
+
     $out['info'] = $info ?: ($out['code'] ? 'error' : 'success');
+
     $out['data'] = $data ?: array();
+
     $out['location'] = $location;
+
     header('Content-Type: application/json; charset=utf-8');
+
     echo json_encode($out, JSON_HEX_TAG);
+
     exit(0);
+
 }
 
 $a = empty($_GET['a']) ? '' : $_GET['a'];
 $qq = empty($_GET['qq']) ? 0 : intval($_GET['qq']);
 
-//假设这是数据源，如MySQL
 $data = array();
 $data[979136] = array('qq'=>979136, 'vip'=>5,'level'=>128, 'reg_time'=>1376523234, 'qb'=>300);
 $data[979137] = array('qq'=>979137, 'vip'=>8,'level'=>101, 'reg_time'=>1377123144, 'qb'=>300);

@@ -28,7 +28,7 @@ class upload_image_api {
 	public $allowed;
 	public $dbc;
 
-	private $log = new mylog();
+	$log = new mylog();
 
 	public function __construct ($dbc) {
 
@@ -121,10 +121,12 @@ class upload_image_api {
 			switch ($_FILES['file']['error']) {
 
 			case 1:
-				$log->var_json('the file exceeds the upload_max_filesize setting in php.ini.',1);
+				$log->var_json('the file exceeds 
+					the upload_max_filesize setting in php.ini.',1);
 				break;
 			case 2:
-				$log->var_json('The file exceeds the MAX_FILE_SIZE setting in the HTML form.',2);
+				$log->var_json('The file exceeds 
+					the MAX_FILE_SIZE setting in the HTML form.',2);
 				break;
 			case 3:
 				$log->var_json ('The file was only partially uploads.',3);

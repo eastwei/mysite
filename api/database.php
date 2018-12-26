@@ -1,4 +1,5 @@
 <?php 
+
 require("log.php");
 
 class DB {
@@ -14,7 +15,9 @@ class DB {
 	public function run() {
 
 		$sql = "select * from picture limit 5";
+
 		$result=mysqli_query($this->dbc,$sql);
+
 		if(mysqli_errno($this->dbc)) {
 			$this->var_json("query database error! \n");
 			exit(0);
@@ -22,11 +25,12 @@ class DB {
 		//$num = mysqli_num_rows($result);
 		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)) 
 		{
-		    $tmp = array();	
+			$tmp = array();	
 			$tmp["id"]=$row["id"];
 			$tmp["caption"]=$row["caption"];
 			$tmp["type"]=$row["type"];
 			$tmp["path"]=$row["filepath"];
+
 			/*format the string to json array*/
 			$this->r["".$this->index] = $tmp;
 			$this->index++;

@@ -1,43 +1,66 @@
         <?php
+
         // put your code here
         $page_title = 'Register';
+
         include ('include/header.html');
+
         //check for form submission:
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
              //Register the user in the database...
             require('../mysqli_connect.php'); //connect to the db.
+
             $errors = array(); //Initialize an error array.
+
         //Check for a first name:
         if (empty($_POST['first_name'])) {
+
             echo '<p> first_name is empty</p>';
+
             $errors[] = 'You forgot to enter your first name.';
+
+
         }else {
+
             $fn = mysqli_real_escape_string($dbc,trim($_POST['first_name']));
             
         }
+	    
         //check for a last name:
         if (empty($_POST['last_name'])) {
+
             $errors[] = 'You forgot to enter your last name.';
+
         }else {
+
             $ln = mysqli_real_escape_string($dbc,trim($_POST['last_name']));
             
         }
         //Check for an email address:
         if(empty($_POST['email'])) {
+
             $errors[] = 'You forgot to enter you email address.';
+
         }else{
+
             $e = mysqli_real_escape_string($dbc,trim($_POST['email']));
            
         }
         //Check for a password and match against the confirmed password:
         if(!empty($_POST['pass1'])) {
+
             if($_POST['pass1'] != $_POST['pass2']) {
+
                 $errors[] = 'Your password did not match the confirmed password.';
+
             }else{
+
                 $p = mysqli_real_escape_string($dbc,trim($_POST['pass1']));
 				echo "pass is $p";
             }
         }else {
+
             $errors[]='You forgot to enter your password.';
         } 
       
@@ -49,6 +72,7 @@
                     . "VALUES ('$fn','$ln','$e',SHA1('$p'),NOW())";
            
             $r = mysqli_query($dbc,$q); //Run the query.
+
             if ($r) { //if it ran ok.
                 //Print a message:
                      echo '<h1> Thank you!</h1>'
@@ -69,22 +93,34 @@
                     
             mysqli_close($dbc); //Close the database connection.
             //Include the footer and quit the script:
+	    //
             include ('include/footer.html');
+
             exit();
+
         }else { //Report the errors.
             echo '<h1>Error!</h1>'
             . '<p class="error">The following error(s) occurred:<br />';
+
             foreach ($errors as $msg) { //Print each error.
+
                 echo "- $msg<br />\n";
+
             }
+
             echo '</p><p>Please try again.</p><p><br /></p>';
         } //End of if (empty($errors)) IF.
+
         mysqli_close($dbc);
         
     } //End of the main Submit conditional.
+
   ?>
+
 <h1>Register</h1>
+
 <form action="register.php" method="post" onsubmit="eg.regCheck();">
+
     <p>First Name:<input type="text" name="first_name" id="nameID" size="15" maxlength="20" 
                    value="<?php if(isset($_POST['first_name'])) 
                        echo $_POST['first_name']; ?>"/></p>
@@ -101,20 +137,24 @@
                                value="<?php if(isset($_POST['pass2'])) 
                                    echo $_POST['pass2']; ?>"/></p>
     <p><input type="submit" name="submit" value="Register"/></p>
+
 </form>
+
 <script type="text/javascript">
     var eg = {};
-    eg.$ = function(id){
-                return document.getElementById(id);
-            };
+	eg.$ = function(id){
+		return document.getElementById(id);
+	};
     eg.regCheck = function() {
         var uid = eg.$("nameID");
         if (uid.value == '') {
                 alert('first_name can not empty!');
+
                 return false;
         }
         return true;
     };
 </script>
+
 <?php include('include/footer.html')?>
  
