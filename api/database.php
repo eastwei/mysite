@@ -1,26 +1,26 @@
 <?php 
 
-require("log.php");
 
 class DB {
 	private $dbc;
 	private $r=array(array());
 	private $index = 0;
-	private $log = new mylog();
 
 	public function __construct($dbc) {
 		$this->dbc = $dbc;
 	}
 
-	public function run() {
+	public function run($id) {
 
-		$sql = "select * from picture limit 5";
+		$sql = "select * from picture where id=$id";
 
 		$result=mysqli_query($this->dbc,$sql);
 
 		if(mysqli_errno($this->dbc)) {
+
 			$this->var_json("query database error! \n");
 			exit(0);
+
 		}
 		//$num = mysqli_num_rows($result);
 		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)) 
@@ -36,11 +36,24 @@ class DB {
 			$this->index++;
 		}
 
-		$log->var_json("picture recode",10001,$this->r);
+		$this->var_json("picture recode",10001,$this->r);
 
 		mysqli_free_result($result);
 
 		mysqli_close($this->dbc);
+	}
+
+	/*send log to client*/
+	public function var_json($info = '', $code = 10000, 
+		                               $data = '', $location = '') {
+
+		$out['code'] = $code ?: 0;
+		$out['info'] = $info ?: ($out['code'] ? 'error' : 'success');
+		$out['data'] = $data ?: '';
+		$out['location'] = $location;
+		header('Content-Type: application/json; charset=utf-8');
+		echo json_encode($out, JSON_HEX_TAG);
+		exit(0);
 	}
 }
 ?>

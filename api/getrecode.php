@@ -1,17 +1,25 @@
 <?php
 
+
 if(file_exists("../../mysqli_connect.php"))
 {
 	require('../../mysqli_connect.php');
+
+} else {
+
+	$mylog->setError("mysqli_connect.php is not exit \n");
 }
 
-require('log.php');
 require('database.php');
 
-$log = new mylog();
+echo "connect data base ok \n";
 
-$db = new DB($dbc);
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-$db->run();
+	$id = 2;
 
+	$db = new DB($dbc);
+
+	$db->run($id);
+}
 ?>
