@@ -3,16 +3,16 @@
 
 class DB {
 	private $dbc;
-	private $r=array(array());
+	private $r = array(array());
 	private $index = 0;
 
 	public function __construct($dbc) {
 		$this->dbc = $dbc;
 	}
 
-	public function run($id) {
+	public function get_recoder_from_db($id,$num) {
 
-		$sql = "select * from picture where id=$id";
+		$sql = "select * from picture where id>=$id limit $num";
 
 		$result=mysqli_query($this->dbc,$sql);
 
