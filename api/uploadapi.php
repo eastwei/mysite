@@ -1,3 +1,10 @@
+
+<?php 
+
+//$_FILES['userhead']['size'] 
+//$_FILES['userhead']['name']
+//$_FILES['userhead']['type']
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 // uploadapi.php - used to upload picture to server
@@ -11,13 +18,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-<?php 
 
-//$_FILES['userhead']['size'] 
-//$_FILES['userhead']['name']
-//$_FILES['userhead']['type']
-
-require('log.php');
 define("PIC_FILE_PATH","../../uploads");
 
 class upload_image_api {
@@ -28,7 +29,6 @@ class upload_image_api {
 	public $allowed;
 	public $dbc;
 
-	$log = new mylog();
 
 	public function __construct ($dbc) {
 
@@ -61,14 +61,14 @@ class upload_image_api {
 		//check if the "caption" is empty
 		if(empty($_POST['caption'])) {
 
-			$log->var_json("caption is null! \n");
+			$this->var_json("caption is null! \n");
 
 		}else{
 			$this->pic_caption = mysqli_real_escape_string(
 				           $this->dbc,trim($_POST['caption']));
 		}
 		if(empty($_POST['type'])) {
-			$log->var_json("type is null! \n");
+			$this->var_json("type is null! \n");
 		}else{
 			$this->pic_type = mysqli_real_escape_string(
 				          $this->dbc,trim($_POST['type']));
@@ -80,7 +80,7 @@ class upload_image_api {
 
 				if(empty($_FILES['file']['tmp_name'])) {
 
-					$log->var_json('tmp_name is empty!');
+					$this->var_json('tmp_name is empty!');
 
 				}
 
@@ -94,13 +94,13 @@ class upload_image_api {
 
 					$this->save_image();
 
-					$log->var_json('file upload ok!', 0 , $this->file_path);
+					$this->var_json('file upload ok!', 0 , $this->file_path);
 
 				}
 
 			}else {
 
-				$log->var_json('please upload a jpeg or png image.');
+				$this->var_json('please upload a jpeg or png image.');
 			}
 
 		}else 
@@ -121,30 +121,30 @@ class upload_image_api {
 			switch ($_FILES['file']['error']) {
 
 			case 1:
-				$log->var_json('the file exceeds 
+				$this->var_json('the file exceeds 
 					the upload_max_filesize setting in php.ini.',1);
 				break;
 			case 2:
-				$log->var_json('The file exceeds 
+				$this->var_json('The file exceeds 
 					the MAX_FILE_SIZE setting in the HTML form.',2);
 				break;
 			case 3:
-				$log->var_json ('The file was only partially uploads.',3);
+				$this->var_json ('The file was only partially uploads.',3);
 				break;
 			case 4:
-				$log->var_json ( 'No file was uploaded.',4);
+				$this->var_json ( 'No file was uploaded.',4);
 				break;
 			case 6:
-				$log->var_json ('No temporary folder was available.',6);
+				$this->var_json ('No temporary folder was available.',6);
 				break;
 			case 7:
-				$log->var_json ('Unable to write to the disk.',7);
+				$this->var_json ('Unable to write to the disk.',7);
 				break;
 			case 8:
-				$log->var_json ('File upload stopped.',8);
+				$this->var_json ('File upload stopped.',8);
 				break;
 			default:
-				$log->var_json ('A system error occurred.');
+				$this->var_json ('A system error occurred.');
 				break;
 			}
 	}
@@ -154,7 +154,7 @@ class upload_image_api {
 
 		if(empty($this->pic_caption) || empty($this->pic_type) || empty($this->file_path)) {
 
-			$log->var_json("data element is null.");
+			$this->var_json("data element is null.");
 			
 			return 0;
 
@@ -166,7 +166,6 @@ class upload_image_api {
 
 		$r = mysqli_query( $this->dbc , $query ); 
 
-		$log->setError("saveimage:save data to database.");
 
 		mysqli_close($this->dbc);
 

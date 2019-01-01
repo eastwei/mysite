@@ -1,12 +1,5 @@
 <?php
 
-header('Content-Type: application/json; charset=UTF-8');
-echo json_encode(array( // Return data
-	'data' => $data
-));
-
-
-
 /*send out log to file*/
 static public function setError($msg) {
 

@@ -4,7 +4,7 @@ class db_functions {
 	private $conn;
 
 	function __construct() {
-		require_once '../include/db_connect.php';
+		require_once 'db_connect.php';
 		$db = new db_connect();
 		$this->conn = $db->connect();
 	}

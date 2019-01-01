@@ -45,14 +45,13 @@ class DB {
 
 	/*send log to client*/
 	public function var_json($info = '', $code = 10000, 
-		                               $data = '', $location = '') {
+		                               $data = '') {
 
 		$out['code'] = $code ?: 0;
 		$out['info'] = $info ?: ($out['code'] ? 'error' : 'success');
 		$out['data'] = $data ?: '';
-		$out['location'] = $location;
 		header('Content-Type: application/json; charset=utf-8');
-		echo json_encode($out, JSON_HEX_TAG);
+		echo json_encode((object)$out, JSON_HEX_TAG);
 		exit(0);
 	}
 }

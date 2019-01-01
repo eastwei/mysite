@@ -18,13 +18,30 @@ create table users(
 */
 
 class db_connect {
+
 	private $conn;
 
 	public function connect() {
 
 		require_once 'config.php';
 
-		$this->conn = new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_DATABASE);
+		$this->conn = mysqli_connect(DB_HOST,DB_USER,DB_PASSWORD,DB_DATABASE);
+
+		if(mysqli_connect_errno($this->conn)) {
+
+			$msg = "connect mysql server fail \n";
+
+		}else {
+
+			$msg = "connect mysql ok \n";
+
+		}
+
+		$time_str=date("Y-m-d H:i:s");
+
+		error_log($time_str."--->".$msg."\n",3,"/var/tmp/php.log");
+
+		mysqli_set_charset($this->conn, "utf8");
 
 		return $this->conn;
 	}
