@@ -1,6 +1,6 @@
 <?php
 define("PIC_PATH" , "../../");
-class slideshow
+class Slide_Show
 {
     private $dbc = NULL;
 

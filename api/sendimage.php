@@ -1,7 +1,7 @@
 <?php
 
 
-class send_image {
+class Send_Image {
 
 
 	public function __construct(){
@@ -32,7 +32,8 @@ class send_image {
 
 		$image_data = fread(fopen($image_file, 'r'), filesize($image_file));
 
-		$base64_image = 'data:' . $image_info['mime'] . ';base64,' . chunk_split(base64_encode($image_data));
+		$base64_image = 'data:' . $image_info['mime'] 
+			        . ';base64,' . chunk_split(base64_encode($image_data));
 
 		return $base64_image;
 	}

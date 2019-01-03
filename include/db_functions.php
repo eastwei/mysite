@@ -13,6 +13,7 @@ class db_functions {
 	}
 
 	public function store_user($name,$email,$password) {
+
 		$uuid = uniqid('',true);
 		$hash = $this->hashSSHA($password);
 		$encrypted_password = $hash["encrypted"];
