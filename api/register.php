@@ -1,10 +1,19 @@
 <?php
 
-require_once 'db_functions.php';
-$db = new db_functions();
-$response = array("error" => FALSE);
 
-public function register($name, $email, $password) {
+function set_error($msg) {
+
+	$time_str=date("Y-m-d H:i:s");
+	error_log($time_str."--->".$msg."\n",3,"/var/tmp/php.log");
+}
+
+public function register($name, $email, $password,$dbc) {
+
+	$response = array("error" => FALSE);
+
+	set_error("enter register");
+
+	$db = new db_functions($dbc);
 
 	if($db->isUserExisted($email)) {
 		$response["error"] = TRUE;

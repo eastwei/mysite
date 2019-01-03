@@ -1,5 +1,5 @@
 <?php
-require('../include/db_connect.php');
+require_once '../include/db_connect.php';
 
 $db_obj = new db_connect();
 
@@ -68,6 +68,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 }
 
+  function set_error($msg) {
+
+	$time_str=date("Y-m-d H:i:s");
+	error_log($time_str."--->".$msg."\n",3,"/var/tmp/php.log");
+}
+
 function func_get_recoders_from_db($request,$dbc) {
 
 	require_once('database.php');
@@ -81,12 +87,57 @@ function func_get_recoders_from_db($request,$dbc) {
 	$db->get_recoder_from_db(intval($id),intval($num));
 }
 
+function login($email, $password, $dbc) {
+
+	$response = array("error" => FALSE);
+
+	require_once('../include/db_functions.php');
+
+	set_error("enter login");
+
+	$db = new db_functions($dbc);
+
+	set_error("create db");
+	$user = $db->getUserByEmailAndPassword($email, $password);
+
+	set_error("get user");
+	if ($user != false) {
+
+		$response["error"] = FALSE;
+
+		$response["uid"] = $user["unique_id"];
+
+		$response["user"]["name"] = $user["name"];
+
+		$response["user"]["email"] = $user["email"];
+
+		$response["user"]["created_at"] = $user["created_at"];
+
+		$response["user"]["updated_at"] = $user["updated_at"];
+
+		echo json_encode($response);
+
+	} else {
+
+		$response["error"] = TRUE;
+
+		$response["error_msg"] = "Login credentials are wrong. Please try again!";
+
+		echo json_encode($response);
+
+	}
+}
+
 function func_user_login($request,$dbc) {
+
+	$response = array("error" => FALSE);
 
 	$email = $request['email'];
 
+		set_error($email);
 	$password = $request['password'];
 
+		set_error($password);
 	if(empty($email) || empty($password)) {
 
 		$response = array("error" => FALSE);
@@ -98,19 +149,58 @@ function func_user_login($request,$dbc) {
 		echo json_encode($response);
 
 	}else {
-		require_once 'login.php';
 
-		login($email, $password);
+		login($email, $password, $dbc);
+	}
+}
+
+function register($name, $email, $password,$dbc) {
+
+	$response = array("error" => FALSE);
+
+	require_once ('../include/db_functions.php');
+
+	$db = new db_functions($dbc);
+
+	set_error("create object register");
+
+	if($db->isUserExisted($email)) {
+		set_error(" isUserExisted");
+		$response["error"] = TRUE;
+		$response["error_msg"] = "User already existed with" . $email;
+		echo json_encode($response);
+	}else {
+		set_error("not isUserExisted");
+		$user = $db->storeUser($name, $email, $password);
+		if ($user) {
+			//user stored sucessfully
+			$response["error"] = FALSE;
+			$response["uid"] = $user["unique_id"];
+			$response["user"]["name"] = $user["name"];
+			$response["user"]["email"] = $user["emial"];
+			$response["user"]["created_at"] = $user["created_at"];
+			$response["user"]["updated_at"] = $user["updated_at"];
+			echo json_encode($reponse);
+		}else {
+			$response["error"] = TRUE;
+			$response["error_msg"] = "Unknown error occurred in registration!";
+			echo json_encode($response);
+		}
 	}
 }
 
 function func_user_register($request,$dbc) {
+
 
 	$name = $request['user_name'];	
 
 	$email = $request['email'];
 
 	$password = $request['password'];
+
+	set_error($name);
+	set_error($email);
+	set_error($password);
 
 	if(empty($name) || empty($email) || empty($password)) {
 
@@ -123,9 +213,7 @@ function func_user_register($request,$dbc) {
 		echo json_encode($response);
 
 	} else {
-		require_once 'register.php';
-
-		register($name, $email, $password);
+		register($name, $email, $password, $dbc);
 	}
 }
 

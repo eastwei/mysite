@@ -1,12 +1,12 @@
 <?php
 
-require_once '../include/db_functions.php';
+public function login($email, $password, $dbc) {
 
-$db = new db_functions();
+	$response = array("error" => FALSE);
 
-$response = array("error" => FALSE);
+	require_once '../include/db_functions.php';
 
-public function login($email, $password) {
+	$db = new db_functions($dbc);
 
 	$user = $db->getUserByEmailAndPassword($email, $password);
 
