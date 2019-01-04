@@ -27,17 +27,48 @@ namespace Framework
 				}, 
 				$array);
 		}
+		public static function toObject($array)
+		{
+			$result = new \stdClass();
+			foreach($array as $key => $value)
+			{
+				if(is_array($value))
+				{
+					$reslut->{$key} = self::toObject($value);
+				}
+				else
+				{
+					$result->{$key} = $value;
+				}
+			}
+			return $reslut;
+		}
 	}//end class
 
-	function array_method_test() {
-		$a = new Array_Methods();
-		$test_array = {1,2,3};
-
-		echo $a->clean($test_array);	
-		echo $a->trim($test_array);
-	}
 
 }//end namespace
 
-	Framework\array_method_test();
+//---------------------------------------test----------------------------
+	function array_method_test() {
+		$a = new Framework\Array_Methods();
+		$test_array = array(1,2,3);
+
+		foreach ($test_array as $num)
+		{
+			echo "$num \n";
+		}
+		$r_1 = $a->clean($test_array);	
+		foreach ($test_array as $r_1)
+		{
+			echo "$num \n";
+		}
+
+		$r_2 = $a->trim($test_array);
+		foreach ($test_array as $r_2)
+		{
+			echo "$num \n";
+		}
+	}
+
+	array_method_test();
 ?>
