@@ -37,4 +37,8 @@ namespace Framework
 		}
 	}//end class
 }//end framework
+namespace {
+	$configuration = new Framework\Configuration(array("type"=>"ini"));
+	$configuration = $configuration->initialize();
+}
 ?>

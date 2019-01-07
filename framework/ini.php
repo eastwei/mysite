@@ -12,7 +12,7 @@ namespace Framework\Configuration\Driver
 		{
 			if(empty($path))
 			{
-				throw new Exceptio\Argument("\$path argument is not valid");
+				throw new Exception\Argument("\$path argument is not valid");
 			}
 			if(!isset($this->_parsed[$path]))
 			{
@@ -40,8 +40,18 @@ namespace Framework\Configuration\Driver
 			if(strstr($key,"."))
 			{
 				$parts = explode(".", $key, 2);
-				if(empty(
+				if(empty($config[$parts[0]))
+				{
+					$config[$parts[0]] = array();
+				}
+				$config[$parts[0]] = $this->_pair($config[$parts[0]],$parts[1],$value);
+			}else
+				{
+					$config[$key] = $value;
+				}
+			return $config;
 
-	}
-}
+		}
+	}//end class
+}//framework
  ?>

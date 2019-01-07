@@ -3,7 +3,7 @@ namespace Framework
 {
 	class Array_Methods
 	{
-		private function __construct()
+		public function __construct()
 		{
 		}
 		private function __clone()
@@ -48,27 +48,32 @@ namespace Framework
 
 }//end namespace
 
+namespace{
 //---------------------------------------test----------------------------
 	function array_method_test() {
 		$a = new Framework\Array_Methods();
-		$test_array = array(1,2,3);
-
+		$test_array = array(1,2,NULL,3,NULL);
+		echo "original array:";
 		foreach ($test_array as $num)
 		{
-			echo "$num \n";
+				echo "$num ";
 		}
 		$r_1 = $a->clean($test_array);	
-		foreach ($test_array as $r_1)
+		echo "clean array:";
+		foreach ( $r_1 as $num )
 		{
-			echo "$num \n";
+				echo "$num ";
 		}
 
 		$r_2 = $a->trim($test_array);
-		foreach ($test_array as $r_2)
+		echo "trim array:";
+		foreach ($r_2 as $num)
 		{
-			echo "$num \n";
+				echo "$num ";
 		}
+		echo "\n";
 	}
 
 	array_method_test();
+}
 ?>
