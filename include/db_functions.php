@@ -31,19 +31,19 @@ class db_functions {
 		        $stmt->bind_param("s",$email);
 			$stmt->execute();
 			$stmt->bind_result($id, $uid, $name, $email, $encrypted_password,
-			                   $salt,$create_at, $update_at);
+			                   $salt,$created_at, $updated_at);
 			$stmt->store_result();
 			$user = array();
 			$i = 0;
 			while ($stmt->fetch()) {
 				$user[$i]['id'] = $id;
-				$user[$i]['unique_id'] = $title;
+				$user[$i]['unique_id'] = $uid;
 				$user[$i]['name'] = $name;
 				$user[$i]['email'] = $email;
 				$user[$i]['encrypted_password'] = $encrypted_password;
 				$user[$i]['salt'] = $salt;
-				$user[$i]['create_at'] = $create_at;
-				$user[$i]['update_at'] = $update_at;
+				$user[$i]['create_at'] = $created_at;
+				$user[$i]['update_at'] = $updated_at;
 				$i++;
 			}
 			$stmt->free_result();
@@ -63,19 +63,19 @@ class db_functions {
 		$stmt->bind_param("s", $email);
 		if($stmt->execute()) {
 			$stmt->bind_result($id, $uid, $name, $email, $encrypted_password,
-			                   $salt,$create_at, $update_at);
+			                   $salt,$created_at, $updated_at);
 			$stmt->store_result();
 			$user = array();
 			$i = 0;
 			while ($stmt->fetch()) {
 				$user[$i]['id'] = $id;
-				$user[$i]['unique_id'] = $title;
+				$user[$i]['unique_id'] = $uid;
 				$user[$i]['name'] = $name;
 				$user[$i]['email'] = $email;
 				$user[$i]['encrypted_password'] = $encrypted_password;
 				$user[$i]['salt'] = $salt;
-				$user[$i]['create_at'] = $create_at;
-				$user[$i]['update_at'] = $update_at;
+				$user[$i]['created_at'] = $created_at;
+				$user[$i]['updated_at'] = $updated_at;
 				$i++;
 			}
 			$stmt->free_result();

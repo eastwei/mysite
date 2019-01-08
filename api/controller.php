@@ -89,7 +89,8 @@ function func_get_recoders_from_db($request,$dbc) {
 
 function login($email, $password, $dbc) {
 
-	$response = array("error" => FALSE);
+	//$response = array("error" => FALSE);
+	$response = array("status" => 0);
 
 	require_once('../include/db_functions.php');
 
@@ -103,26 +104,29 @@ function login($email, $password, $dbc) {
 	set_error("get user");
 	if ($user != false) {
 
-		$response["error"] = FALSE;
+		//$response["error"] = FALSE;
 
-		$response["uid"] = $user["unique_id"];
+		//$response["uid"] = $user["unique_id"];
 
-		$response["user"]["name"] = $user["name"];
+		//$response["user"]["name"] = $user["name"];
 
-		$response["user"]["email"] = $user["email"];
+		//$response["user"]["email"] = $user["email"];
 
-		$response["user"]["created_at"] = $user["created_at"];
+		//$response["user"]["created_at"] = $user["created_at"];
 
-		$response["user"]["updated_at"] = $user["updated_at"];
+		//$response["user"]["updated_at"] = $user["updated_at"];
 
+		$response["full_name"] = "weidong";
 		echo json_encode($response);
 
 	} else {
 
-		$response["error"] = TRUE;
+		//$response["error"] = TRUE;
 
-		$response["error_msg"] = "Login credentials are wrong. Please try again!";
+		//$response["error_msg"] = "Login credentials are wrong. Please try again!";
 
+		$response["status"] = 1;
+		$response["message"] = "Login credentials are wrong. Please try again!";
 		echo json_encode($response);
 
 	}
@@ -130,7 +134,9 @@ function login($email, $password, $dbc) {
 
 function func_user_login($request,$dbc) {
 
-	$response = array("error" => FALSE);
+	//$response = array("error" => FALSE);
+
+	$response = array("status" => 0);
 
 	$email = $request['email'];
 
@@ -140,12 +146,13 @@ function func_user_login($request,$dbc) {
 		set_error($password);
 	if(empty($email) || empty($password)) {
 
-		$response = array("error" => FALSE);
+		//$response["error"] = true;
 
-		$response["error"] = true;
+		//$response["error_msg"] = "Required parameters email or password or name is empty";
 
-		$response["error_msg"] = "Required parameters email or password or name is empty";
+		$response["status"] = 1;
 
+		$response["message"] = "Required parameters email or password or name is empty";
 		echo json_encode($response);
 
 	}else {
@@ -156,7 +163,7 @@ function func_user_login($request,$dbc) {
 
 function register($name, $email, $password,$dbc) {
 
-	$response = array("error" => FALSE);
+	$response = array("status" => 0);
 
 	require_once ('../include/db_functions.php');
 
@@ -166,24 +173,27 @@ function register($name, $email, $password,$dbc) {
 
 	if($db->isUserExisted($email)) {
 		set_error(" isUserExisted");
-		$response["error"] = TRUE;
-		$response["error_msg"] = "User already existed with" . $email;
+		$response["status"] = 1;
+		//$response["error"] = TRUE;
+		//$response["error_msg"] = "User already existed with" . $email;
 		echo json_encode($response);
 	}else {
 		set_error("not isUserExisted");
 		$user = $db->storeUser($name, $email, $password);
 		if ($user) {
 			//user stored sucessfully
-			$response["error"] = FALSE;
-			$response["uid"] = $user["unique_id"];
-			$response["user"]["name"] = $user["name"];
-			$response["user"]["email"] = $user["emial"];
-			$response["user"]["created_at"] = $user["created_at"];
-			$response["user"]["updated_at"] = $user["updated_at"];
+			//$response["error"] = FALSE;
+			//$response["uid"] = $user["unique_id"];
+			//$response["user"]["name"] = $user["name"];
+			//$response["user"]["email"] = $user["emial"];
+			//$response["user"]["created_at"] = $user["created_at"];
+			//$response["user"]["updated_at"] = $user["updated_at"];
 			echo json_encode($reponse);
 		}else {
-			$response["error"] = TRUE;
-			$response["error_msg"] = "Unknown error occurred in registration!";
+			$response["status"] = 2;
+			$response["message"] = "Unknown error occurred in registration!";
+			//$response["error"] = TRUE;
+			//$response["error_msg"] = "Unknown error occurred in registration!";
 			echo json_encode($response);
 		}
 	}
